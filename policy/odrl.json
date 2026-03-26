@@ -1,0 +1,16 @@
+{
+  "permission": [
+    {
+      "assignee": "teacher",
+      "action": "read",
+      "target": "student_grade"
+    }
+  ],
+  "prohibition": [
+    {
+      "assignee": "guest",
+      "action": "read",
+      "target": "student_grade"
+    }
+  ]
+}

@@ -7,19 +7,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import translation.layer.odrl_opa.service.OdrlToRegoService;
+import translation.layer.odrl_opa.service.OpaPolicyService;
 
 @RestController
 @RequestMapping("/compile")
 public class CompileController {
 
-    private final OdrlToRegoService service;
+    private final OdrlToRegoService converter;
+    private final OpaPolicyService service;
 
-    public CompileController(OdrlToRegoService service) {
+    public CompileController(OdrlToRegoService converter, OpaPolicyService service) {
+        this.converter = converter;
         this.service = service;
     }
 
     @PostMapping
-    public String compile(@RequestBody Map<String, Object> odrl) {
-        return service.convert(odrl);
+    public String compileAndUpload(@RequestBody Map<String, Object> odrl) {
+        String rego = converter.convert(odrl);
+        service.uploadPolicy(rego);
+        return rego;
     }
 }
